@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # wwwroot libraries
 wwwroot/lib/
+/BookstoreBlazor/wwwroot/lib

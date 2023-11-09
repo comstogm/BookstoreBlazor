@@ -1,0 +1,42 @@
+﻿@using BookstoreBlazor.Services;
+
+@page "/ShoppingCart"
+@inject CartService CartService
+
+<h3>ShoppingCart</h3>
+
+@if (CartContents is null)
+{
+    <p>Page is loading...</p>
+} else {
+    <div class="container-fluid">
+        @foreach(var prod in CartContents)
+        {
+            <h1>@prod</h1>
+        }
+    </div>
+}
+@code {
+    public List<int> CartContents { get; set; } = new();
+
+    private void getCartContents()
+    {
+        //stub data
+        CartService.AddProductToCart(1);
+        CartService.AddProductToCart(2);
+        CartService.AddProductToCart(3);
+
+        CartContents = CartService.GetProductsFromCart();
+    }
+
+    private void Buy(int productId)
+    {
+        CartService.AddProductToCart(productId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        getCartContents();
+        await base.OnInitializedAsync();
+    }
+}
