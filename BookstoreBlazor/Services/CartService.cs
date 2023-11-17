@@ -1,6 +1,4 @@
-﻿using Assignment4Lib_Comstock_Gabriel.Entities;
-
-namespace BookstoreBlazor.Services
+﻿namespace BookstoreBlazor.Services
 {
     public class CartService
     {
