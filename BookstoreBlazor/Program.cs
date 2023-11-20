@@ -1,5 +1,6 @@
 using BookstoreBlazor;
 using BookstoreBlazor.Services;
+using BookstoreDatabase.Data;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
