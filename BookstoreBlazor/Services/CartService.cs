@@ -20,5 +20,10 @@
             //todo
         }
 
+        public int GetCount()
+        {
+            return Products.Count;
+        }
+
     }
 }

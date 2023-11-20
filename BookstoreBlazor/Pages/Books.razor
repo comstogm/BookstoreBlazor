@@ -1,6 +1,79 @@
-﻿@page "/Books"
+﻿@page "/Books/{CustomerId:int?}"
+
+@using BookstoreBlazor.Services;
+@using BookstoreDatabase.Entitites;
+
+@inject HttpClient http
+@inject CartService CartService
+
 <h3>Books</h3>
 
+@if (BookList is null && Customer is null)
+{
+    <p>Page is loading...</p>
+} else {
+    <p>What would you like to purchase @Customer.FirstName</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Book Title
+                </th>
+                <th>
+                    Book ISBN
+                </th>
+                <th>
+                    Publisher Name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in BookList)
+            {
+                <tr>
+                    <td>
+                        @book.BookTitle
+                    </td>
+                    <td>
+                        @book.BookISBN
+                    </td>
+                    <td>
+                        @book.PublisherName
+                    </td>
+                    <td>
+                        @book.Price
+                    </td>
+                    <td>
+                        <a @onclick="@( () => AddToCart(book.BookId))" @onclick:preventDefault="true" href="">Add to Cart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 @code {
+    [Parameter]
+    public int? CustomerId { get; set; }
+    public Customer? Customer {get; set; }
+    public List<Book>? BookList { get; set; }
+
+    private void AddToCart(int productId)
+    {
+        CartService.AddProductToCart(productId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Need actual route to controllers
+        BookList = await http.GetFromJsonAsync<List<Book>>("api/Books");
+        Customer = await http.GetFromJsonAsync<Customer>($"api/Customers/{CustomerId}");
+        await base.OnInitializedAsync();
+    }
 
 }
