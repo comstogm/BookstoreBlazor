@@ -18,6 +18,16 @@ namespace BookstoreAPI
             });
 
             builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsAllowAll",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -25,6 +35,8 @@ namespace BookstoreAPI
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            app.UseCors("CorsAllowAll");
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
