@@ -1,6 +1,84 @@
-﻿@page "/Books"
+﻿@page "/Books/{CustomerId:int?}"
+
+@using BookstoreBlazor.Services;
+@using BookstoreDatabase.Entitites;
+
+@inject HttpClient http
+@inject CartService CartService
+@inject IJSRuntime JS
+
 <h3>Books</h3>
 
+@if (BookList is null && Customer is null)
+{
+    <p>Page is loading...</p>
+} else {
+    <p>What would you like to purchase @Customer.FirstName</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Book Title
+                </th>
+                <th>
+                    Book ISBN
+                </th>
+                <th>
+                    Publisher Name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in BookList)
+            {
+                <tr>
+                    <td>
+                        @book.BookTitle
+                    </td>
+                    <td>
+                        @book.BookISBN
+                    </td>
+                    <td>
+                        @book.PublisherName
+                    </td>
+                    <td>
+                        @book.Price
+                    </td>
+                    <td>
+                        <a @onclick="@(() => {AddToCart(book); AddedToCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">Add to Cart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 @code {
+    [Parameter]
+    public int? CustomerId { get; set; }
+    public Customer? Customer {get; set; }
+    public List<Book>? BookList { get; set; }
+
+    private async void AddedToCartAlert(String bookTitle)
+    {
+         await JS.InvokeVoidAsync("alert", $"{bookTitle} added to the cart");
+    }
+
+    private void AddToCart(Book book)
+    {
+        CartService.AddProductToCart(book);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BookList = await http.GetFromJsonAsync<List<Book>>("api/Books");
+        Customer = await http.GetFromJsonAsync<Customer>($"api/Customers/{CustomerId}");
+        await base.OnInitializedAsync();
+    }
 
 }

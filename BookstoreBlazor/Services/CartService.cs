@@ -1,23 +1,30 @@
-﻿namespace BookstoreBlazor.Services
+﻿using BookstoreDatabase.Entitites;
+
+namespace BookstoreBlazor.Services
 {
     public class CartService
     {
         //List of ints to hold item IDs
-        public List<int> Products { get; set; } = new();
+        public List<Book> Products { get; set; } = new();
 
-        public void AddProductToCart(int productId) 
+        public void AddProductToCart(Book book) 
         {
-            Products.Add(productId);
+            Products.Add(book);
         }
 
-        public List<int> GetProductsFromCart()
+        public List<Book> GetProductsFromCart()
         {
             return Products;
         }
 
-        public void RemoveProductFromCart(int productId)
+        public void RemoveProductFromCart(Book book)
         {
-            //todo
+            Products.Remove(book);
+        }
+
+        public int GetCount()
+        {
+            return Products.Count;
         }
 
     }
