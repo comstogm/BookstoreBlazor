@@ -5,6 +5,7 @@
 
 @inject HttpClient http
 @inject CartService CartService
+@inject IJSRuntime JS
 
 <h3>Books</h3>
 
@@ -49,7 +50,7 @@
                         @book.Price
                     </td>
                     <td>
-                        <a @onclick="@( () => AddToCart(book.BookId))" @onclick:preventDefault="true" href="">Add to Cart</a>
+                        <a @onclick="@(() => {AddToCart(book); AddedToCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">Add to Cart</a>
                     </td>
                 </tr>
             }
@@ -63,14 +64,18 @@
     public Customer? Customer {get; set; }
     public List<Book>? BookList { get; set; }
 
-    private void AddToCart(int productId)
+    private async void AddedToCartAlert(String bookTitle)
     {
-        CartService.AddProductToCart(productId);
+         await JS.InvokeVoidAsync("alert", $"{bookTitle} added to the cart");
+    }
+
+    private void AddToCart(Book book)
+    {
+        CartService.AddProductToCart(book);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        //Need actual route to controllers
         BookList = await http.GetFromJsonAsync<List<Book>>("api/Books");
         Customer = await http.GetFromJsonAsync<Customer>($"api/Customers/{CustomerId}");
         await base.OnInitializedAsync();

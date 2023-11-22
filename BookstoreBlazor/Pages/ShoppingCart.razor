@@ -1,7 +1,9 @@
 ﻿@using BookstoreBlazor.Services;
+@using BookstoreDatabase.Entitites;
 
 @page "/ShoppingCart"
 @inject CartService CartService
+@inject HttpClient http
 
 <h3>ShoppingCart</h3>
 
@@ -10,28 +12,55 @@
     <p>Page is loading...</p>
 } else {
     <div class="container-fluid">
-        @foreach(var prod in CartContents)
-        {
-            <h1>@prod</h1>
-        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Book Title
+                    </th>
+                    <th>
+                        Book ISBN
+                    </th>
+                    <th>
+                        Publisher Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in CartContents)
+                {
+                    <tr>
+                        <td>
+                            @book.BookTitle
+                        </td>
+                        <td>
+                            @book.BookISBN
+                        </td>
+                        <td>
+                            @book.PublisherName
+                        </td>
+                        <td>
+                            @book.Price
+                        </td>
+                        <td>
+                            @* <a @onclick="@(() => {AddToCart(book.BookId); AddedToCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">Add to Cart</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
 @code {
-    public List<int> CartContents { get; set; } = new();
+    public List<Book>? CartContents { get; set; }
 
     private void getCartContents()
     {
-        //stub data
-        CartService.AddProductToCart(1);
-        CartService.AddProductToCart(2);
-        CartService.AddProductToCart(3);
-
         CartContents = CartService.GetProductsFromCart();
-    }
-
-    private void AddToCart(int productId)
-    {
-        CartService.AddProductToCart(productId);
     }
 
     protected override async Task OnInitializedAsync()
