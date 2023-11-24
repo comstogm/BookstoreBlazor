@@ -47,7 +47,7 @@
                         @book.PublisherName
                     </td>
                     <td>
-                        @book.Price
+                        @($"{book.Price:$###0.00}")
                     </td>
                     <td>
                         <a @onclick="@(() => {AddToCart(book); AddedToCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">Add to Cart</a>

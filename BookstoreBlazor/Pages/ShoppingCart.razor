@@ -1,9 +1,10 @@
 ﻿@using BookstoreBlazor.Services;
 @using BookstoreDatabase.Entitites;
 
-@page "/ShoppingCart"
+@page "/ShoppingCart/{CustomerId:int?}"
 @inject CartService CartService
 @inject HttpClient http
+@inject IJSRuntime JS
 
 <h3>ShoppingCart</h3>
 
@@ -15,6 +16,9 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>
+                        Remove
+                    </th>
                     <th>
                         Book Title
                     </th>
@@ -35,6 +39,9 @@
                 {
                     <tr>
                         <td>
+                            <a @onclick="@(() => {removeFromCart(book); RemovedFromCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">X</a>
+                        </td>
+                        <td>
                             @book.BookTitle
                         </td>
                         <td>
@@ -44,23 +51,64 @@
                             @book.PublisherName
                         </td>
                         <td>
-                            @book.Price
-                        </td>
-                        <td>
-                            @* <a @onclick="@(() => {AddToCart(book.BookId); AddedToCartAlert(book.BookTitle);})" @onclick:preventDefault="true" href="">Add to Cart</a> *@
+                            @($"{book.Price:$###0.00}")
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <div style="float: right; padding: 1em">
+        Total = @($"{GetCartTotal():$###0.00}")
+    </div>
+    <div style="float: right; padding: 1em">
+        <a @onclick="@(() => HandleSubmit())" @onclick:preventDefault="true" href="" class="btn btn-primary m-1">Checkout</a>
+    </div> 
 }
 @code {
+    [Parameter]
+    public int? CustomerId { get; set; }
     public List<Book>? CartContents { get; set; }
+
+    private void removeFromCart(Book book)
+    {
+        CartService.RemoveProductFromCart(book);
+    }
+
+    private float GetCartTotal()
+    {
+        float total = 0;
+        foreach(var book in CartContents!)
+        {
+            total += book.Price;
+        }
+        return total;
+    }
+
+    private async void RemovedFromCartAlert(String bookTitle)
+    {
+        await JS.InvokeVoidAsync("alert", $"{bookTitle} removed from the cart");
+    }
 
     private void getCartContents()
     {
         CartContents = CartService.GetProductsFromCart();
+    }
+
+    //doesn't work
+    protected async void HandleSubmit()
+    {
+        Order newOrder = new Order();
+        foreach(var book in CartContents)
+        {
+            OrderLineItem newOrderLineItem = new OrderLineItem(
+               book.BookId,
+               book
+        );
+            newOrder.OrderLineItems.Add(newOrderLineItem);
+        }
+
+        var result = await http.PostAsJsonAsync<Order>($"api/Orders", newOrder);
     }
 
     protected override async Task OnInitializedAsync()
