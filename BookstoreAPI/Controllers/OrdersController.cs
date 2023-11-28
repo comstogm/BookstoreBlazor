@@ -55,7 +55,7 @@ namespace BookstoreAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
-            if (id != order.Orderid)
+            if (id != order.OrderId)
             {
                 return BadRequest();
             }
@@ -93,7 +93,7 @@ namespace BookstoreAPI.Controllers
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.Orderid }, order);
+            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
         // DELETE: api/Orders/5
@@ -118,7 +118,7 @@ namespace BookstoreAPI.Controllers
 
         private bool OrderExists(int id)
         {
-            return (_context.Orders?.Any(e => e.Orderid == id)).GetValueOrDefault();
+            return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
         }
     }
 }

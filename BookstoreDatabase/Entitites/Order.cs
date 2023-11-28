@@ -5,7 +5,7 @@ namespace BookstoreDatabase.Entitites
     [Table("Orders")]
     public class Order
     {
-        public int Orderid { get; set; }
+        public int OrderId { get; set; }
 
         public DateTime OrderDate { get; set; }
 

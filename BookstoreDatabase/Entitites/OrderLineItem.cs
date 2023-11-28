@@ -5,13 +5,6 @@ namespace BookstoreDatabase.Entitites
     [Table("OrderLineItems")]
     public class OrderLineItem
     {
-        public OrderLineItem() { }
-        public OrderLineItem(int bookId, Book? bookName)
-        {
-            BookId = bookId;
-            BookName = bookName;
-        }
-
         public int OrderLineItemId { get; set; }
 
         public int OrderId { get; set; }
@@ -22,6 +15,6 @@ namespace BookstoreDatabase.Entitites
 
         public float Price { get; set; }
 
-        public Book? BookName { get; set; } = null;
+        public string? BookName { get; set; } = null;
     }
 }

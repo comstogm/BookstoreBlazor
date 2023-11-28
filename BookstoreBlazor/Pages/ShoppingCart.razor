@@ -67,8 +67,23 @@
 }
 @code {
     [Parameter]
-    public int? CustomerId { get; set; }
+    public int CustomerId { get; set; }
     public List<Book>? CartContents { get; set; }
+
+    private async void HandleSubmit()
+    {
+        var newOrder = CartService.shoppingCartViewModel.BuildOrder(CustomerId);
+
+        var response = await http.PostAsJsonAsync<Order>($"api/Orders", newOrder);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await JS.InvokeVoidAsync("alert", "Order submitted!");
+        } else
+        {
+            await JS.InvokeVoidAsync("alert", "Order failed!");
+        }
+    }
 
     private void removeFromCart(Book book)
     {
@@ -93,22 +108,6 @@
     private void getCartContents()
     {
         CartContents = CartService.GetProductsFromCart();
-    }
-
-    //doesn't work
-    protected async void HandleSubmit()
-    {
-        Order newOrder = new Order();
-        foreach(var book in CartContents)
-        {
-            OrderLineItem newOrderLineItem = new OrderLineItem(
-               book.BookId,
-               book
-        );
-            newOrder.OrderLineItems.Add(newOrderLineItem);
-        }
-
-        var result = await http.PostAsJsonAsync<Order>($"api/Orders", newOrder);
     }
 
     protected override async Task OnInitializedAsync()

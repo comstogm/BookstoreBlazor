@@ -21,7 +21,7 @@ namespace BookstoreDatabase.Data
 
             var optionsBuilder = new DbContextOptionsBuilder<BookstoreContext>();
 
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("BlazoreBookstoreDB"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("BookstoreDB"));
 
             return new BookstoreContext(optionsBuilder.Options);
 
