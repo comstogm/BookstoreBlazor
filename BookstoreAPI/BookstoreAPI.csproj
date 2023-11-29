@@ -21,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookstoreDatabase\BookstoreDatabase.csproj" />
+    <ProjectReference Include="..\BookStoreModels\BookStoreModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
