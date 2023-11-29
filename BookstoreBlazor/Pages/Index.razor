@@ -1,3 +1,56 @@
 ﻿@page "/"
+@page "/Index"
 
-<h1>Hello, world!</h1>
+@using BookStoreModels
+
+@inject HttpClient http
+
+
+
+<h1>Choose Customer</h1>
+<form>
+    <div class="form-group m-2">
+        <label class="control-label"> Customer: </label>
+        <select class="form-control" @bind="CustomerId">
+            <option value="" selected>Select a Customer...</option>
+            @foreach (var customer in Customers)
+            {
+                <option value="@customer.CustomerId"> @customer.FullName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group m-2">
+        <a class="btn btn-primary"
+           href="/PointOfSale/@CustomerId"
+        @onclick="SetAllowNavigate"
+        @onclick:preventDefault="AllowNavigate">GO</a>
+    </div>
+</form>
+
+@code {
+    public string? CustomerId { get; set; }
+
+    public bool AllowNavigate { get; set; } = true;
+
+    public List<CustomerViewModels>? Customers { get; set; } = new List<CustomerViewModels>();
+
+
+    private void SetAllowNavigate()
+    {
+        AllowNavigate = string.IsNullOrWhiteSpace(CustomerId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Customers = await http.
+            GetFromJsonAsync<List<CustomerViewModels>>("api/Customers");
+        }
+        catch (Exception ex)
+        {
+
+        }
+        await base.OnInitializedAsync();
+    }
+}

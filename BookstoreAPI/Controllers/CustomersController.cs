@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookstoreDatabase.Data;
 using BookstoreDatabase.Entitites;
+using BookStoreModels;
 
 namespace BookstoreAPI.Controllers
 {
@@ -22,15 +23,39 @@ namespace BookstoreAPI.Controllers
         }
 
         // GET: api/Customers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        [HttpGet(Name = "GetCustomers")]
+        public async Task<ActionResult<IEnumerable<CustomerViewModels>>> GetCustomers()
         {
-          if (_context.Customers == null)
-          {
-              return NotFound();
-          }
-            return await _context.Customers.ToListAsync();
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
+
+            List<CustomerViewModels> customerViewModels = new List<CustomerViewModels>();
+
+            var customers = await _context.Customers.OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName).ToListAsync();
+
+            foreach (var customer in customers)
+            {
+                var customerViewModel = new CustomerViewModels
+                {
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    CustomerId = customer.CustomerId,
+                    Address = customer.Address,
+                    City = customer.City,
+                    PostalCode = customer.PostalCode,
+                    State = customer.State
+                };
+
+                customerViewModels.Add(customerViewModel);
+            }
+
+            return customerViewModels;
         }
+
+
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
