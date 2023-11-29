@@ -1,5 +1,5 @@
-﻿using BookstoreBlazor.ViewModels;
-using BookstoreDatabase.Entitites;
+﻿using BookstoreDatabase.Entitites;
+using BookstoreModels;
 
 namespace BookstoreBlazor.Services
 {

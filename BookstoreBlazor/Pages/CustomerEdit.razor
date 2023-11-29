@@ -76,14 +76,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Customer = await http.
-        GetFromJsonAsync<CustomerViewModels>($"api/customers/{CustomerId}");
+        Customer = await http.GetFromJsonAsync<CustomerViewModels>($"api/Customers/{CustomerId}");
 
         await base.OnInitializedAsync();
     }
 
     protected async void HandleSubmit()
     {
-        var result = await http.PutAsJsonAsync<CustomerViewModels>($"api/customers/{CustomerId}", Customer);
+        var result = await http.PutAsJsonAsync<CustomerViewModels>($"api/Customers/{CustomerId}", Customer);
     }
 }

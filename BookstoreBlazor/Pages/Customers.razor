@@ -75,8 +75,7 @@
     {
         try
         {
-            CustomerList = await http.
-            GetFromJsonAsync<List<CustomerViewModels>>("api/Customers");
+            CustomerList = await http.GetFromJsonAsync<List<CustomerViewModels>>("api/Customers");
         }
         catch (Exception ex)
         {
@@ -86,7 +85,7 @@
     }
     private async Task DeleteCustomer(int customerId)
     {
-        var result = await http.DeleteAsync($"api/customers/{customerId}");
+        var result = await http.DeleteAsync($"api/Customers/{customerId}");
         CustomerList = await http.GetFromJsonAsync<List<CustomerViewModels>>("api/Customers");
         StateHasChanged();
     }

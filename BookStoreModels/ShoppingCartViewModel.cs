@@ -1,6 +1,6 @@
 ﻿using BookstoreDatabase.Entitites;
 
-namespace BookstoreBlazor.ViewModels
+namespace BookstoreModels
 {
     public class ShoppingCartViewModel
     {

@@ -17,7 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookstoreAPI", "BookstoreAP
 		{EE4B8112-AAD7-4B94-9CCC-53544EA938F9} = {EE4B8112-AAD7-4B94-9CCC-53544EA938F9}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStoreModels", "BookStoreModels\BookStoreModels.csproj", "{4F1FFF72-CBB6-40E9-85C8-D6F85C4C0251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStoreModels", "BookStoreModels\BookStoreModels.csproj", "{4F1FFF72-CBB6-40E9-85C8-D6F85C4C0251}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EE4B8112-AAD7-4B94-9CCC-53544EA938F9} = {EE4B8112-AAD7-4B94-9CCC-53544EA938F9}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
