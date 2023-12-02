@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookstoreDatabase\BookstoreDatabase.csproj" />
+    <ProjectReference Include="..\BookStoreModels\BookStoreModels.csproj" />
   </ItemGroup>
 
 </Project>

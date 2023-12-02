@@ -15,6 +15,6 @@ namespace BookstoreDatabase.Entitites
 
         public float Price { get; set; }
 
-        public Book? BookName { get; set; } = null;
+        public string? BookName { get; set; } = null;
     }
 }
